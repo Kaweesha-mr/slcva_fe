@@ -1,4 +1,4 @@
-import DefaultLayout from "@/components/Layouts/DefaultLaout";
+import { DefaultLayout } from "@/components";
 
 
 export default function Home() {

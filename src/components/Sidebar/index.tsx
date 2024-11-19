@@ -1,11 +1,9 @@
-
-
-import React from "react";
+"use client"
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "../ClickOutside";
-import useLocalStorage from "@/hooks/useLocalStorage";
 import { menuGroups } from "./sidebarConfig";
 
 interface SidebarProps {
@@ -13,25 +11,21 @@ interface SidebarProps {
   setSidebarOpen: (arg: boolean) => void;
 }
 
-
-
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
-
-  const [pageName, setPageName] = useLocalStorage("selectedMenu", "dashboard");
+  // Replace useLocalStorage with useState
+  const [pageName, setPageName] = useState("dashboard");
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
       <aside
-className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden border-r border-gray-3 bg-blue-100 dark:border-dark-4 dark:bg-dark transition-colors duration-500 ease-in-out lg:static lg:translate-x-0 ${
-  sidebarOpen
-    ? "translate-x-0 duration-300 ease-linear"
-    : "-translate-x-full"
-}`}
-
-
+        className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden border-r border-gray-3 bg-blue-100 dark:border-dark-4 dark:bg-dark transition-colors duration-500 ease-in-out lg:static lg:translate-x-0 ${
+          sidebarOpen
+            ? "translate-x-0 duration-300 ease-linear"
+            : "-translate-x-full"
+        }`}
       >
-        {/* <!-- SIDEBAR HEADER --> */}
-        <div className="flex items-center  justify-between gap-2 px-6  py-5 lg:py-6.5 xl:py-10">
+        {/* Sidebar Header */}
+        <div className="flex items-center justify-between gap-2 px-6 py-5 lg:py-6.5 xl:py-10">
           <Link href="/">
             <Image
               width={170}
@@ -72,18 +66,16 @@ className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-
             </svg>
           </button>
         </div>
-        {/* <!-- SIDEBAR HEADER --> */}
 
-        <div className="no-scrollbar  flex flex-col overflow-y-auto duration-300 ease-linear">
-
+        {/* Sidebar Content */}
+        <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
           <nav className="mt-1 px-4 lg:px-6">
             {menuGroups.map((group, groupIndex) => (
               <div key={groupIndex}>
                 <h3 className="mb-5 text-sm font-medium text-gray-6 dark:text-dark-6">
                   {group.name}
                 </h3>
-
-                <ul className="mb-6  flex flex-col gap-2">
+                <ul className="mb-6 flex flex-col gap-2">
                   {group.menuItems.map((menuItem, menuIndex) => (
                     <SidebarItem
                       key={menuIndex}
@@ -96,7 +88,6 @@ className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-
               </div>
             ))}
           </nav>
-
         </div>
       </aside>
     </ClickOutside>

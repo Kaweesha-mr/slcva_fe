@@ -18,9 +18,9 @@ export default function RootLayout({
 
   
   return (
-    <html lang="en" className='light'>
+    <html lang="en">
       <body
-        className={` antialiased transition-colors duration-500 ease-in-out bg-slate-50 dark:bg-[#2D3748] `}
+        className={` antialiased transition-colors duration-500 ease-in-out`}
       >
         <Providers>
           {children}
