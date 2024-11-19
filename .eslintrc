@@ -1,0 +1,35 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "next/core-web-vitals", 
+    "plugin:prettier/recommended", 
+    "next/core-web-vitals", "next/typescript"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module"
+  },
+  "rules": {
+
+    "semi": ["error", "always"], 
+    "no-var": "error",
+    "prefer-const": "warn", 
+    "eqeqeq": ["error", "always"], 
+    "no-unused-vars": "warn", 
+    "no-undef": "error", 
+    "no-empty": ["error", { "allowEmptyCatch": true }], 
+    "no-async-promise-executor": "error", 
+    "require-await": "error",
+    "no-return-await": "error", 
+    "curly": ["error", "all"], 
+    "consistent-return": "warn", 
+    "allowSingleLine": "true"
+  }
+}
