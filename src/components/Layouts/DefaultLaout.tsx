@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from "react";
-import Sidebar from "@/components/Sidebar";
+import dynamic from "next/dynamic";
+
+const Sidebar = dynamic(() => import("@/components/Sidebar"), { ssr: false });
 import Header from "@/components/Header";
 
 export default function DefaultLayout({

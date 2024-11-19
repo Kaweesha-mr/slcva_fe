@@ -1,31 +1,31 @@
-import useColorMode from "@/app/hooks/useColorMode";
-import {Switch} from "@nextui-org/react";
+"use client";
+
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
+import { Switch } from "@nextui-org/react";
 import { MoonIcon } from "../../../public/images/DarkMode/MoonIcon";
 import { SunIcon } from "../../../public/images/DarkMode/SunIcon";
-SunIcon
 
+export function DarkModeSwitcher() {
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
 
-const DarkModeSwitcher = () => {
-  const [colorMode, setColorMode] = useColorMode();
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <li>
-        <Switch
-      defaultSelected
-      size="lg"
-      color="default"
-      startContent={<SunIcon />}
-      endContent={<MoonIcon />}
-      onClick={() => {
-        if (typeof setColorMode === "function") {
-          setColorMode(colorMode === "light" ? "dark" : "light");
-        }
-      }}
-    />
-
-
+      <Switch
+        checked={theme === "dark"}
+        size="lg"
+        color="default"
+        startContent={<SunIcon />}
+        endContent={<MoonIcon />}
+        onChange={() => setTheme(theme === "light" ? "dark" : "light")}
+      />
     </li>
   );
-};
-
-export default DarkModeSwitcher;
+}

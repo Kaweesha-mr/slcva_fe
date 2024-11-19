@@ -1,4 +1,4 @@
-"use client";
+
 
 import React from "react";
 import Link from "next/link";
@@ -31,10 +31,10 @@ className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-
 
       >
         {/* <!-- SIDEBAR HEADER --> */}
-        <div className="flex items-center  justify-between gap-2 px-6  py-5.5 lg:py-6.5 xl:py-10">
+        <div className="flex items-center  justify-between gap-2 px-6  py-5 lg:py-6.5 xl:py-10">
           <Link href="/">
             <Image
-              width={150}
+              width={170}
               height={24}
               src={"/images/logo/logoLight.png"}
               alt="Logo"
@@ -45,7 +45,7 @@ className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-
             <Image
               width={150}
               height={24}
-              src={"/images/logo/logoDark.png"}
+              src={"/images/logo/LogoDark.png"}
               alt="Logo"
               priority
               className="hidden dark:block"

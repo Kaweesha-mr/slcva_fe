@@ -3,8 +3,8 @@ import { HeaderConfigTypes } from "@/types";
 
 
 const headerConfig:HeaderConfigTypes.HeaderConfig = {
-    Title: 'Project Name',
-    SubTitle: 'A Next.js app with NextUI',
+    Title: 'Cancer Care Association 🇱🇰',
+    SubTitle: 'A challenging future for everyone',
 
     User: {
         Name: 'Tony Reichert',

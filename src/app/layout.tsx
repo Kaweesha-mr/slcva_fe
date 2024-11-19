@@ -24,8 +24,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  
   return (
-    <html lang="en" className='dark'>
+    <html lang="en" className='light'>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-500 ease-in-out bg-slate-50 dark:bg-[#2D3748] `}
       >
