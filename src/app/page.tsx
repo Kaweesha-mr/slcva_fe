@@ -1,14 +1,9 @@
-import { DefaultLayout } from "@/components";
 
 
 export default function Home() {
   return (
-    <>
-    <DefaultLayout>
-      <div>hello</div>
-
-    </DefaultLayout>
-      
-    </>
+    <div className="flex text-2xl font-bold align-middle marq justify-center">
+       Hello this is the 1st page
+    </div>
   );
 }

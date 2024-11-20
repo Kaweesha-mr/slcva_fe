@@ -4,7 +4,11 @@ import Link from "next/link";
 import Image from "next/image";
 import SidebarItem from "@/components/Sidebar/SidebarItem";
 import ClickOutside from "../ClickOutside";
-import { menuGroups } from "./sidebarConfig";
+import { usePathname } from "next/navigation";
+import { AdminSideBar } from "./Data/AdminSideBar";
+import { PatientSideBar } from "./Data/PatientSideBar";
+import { DonorSideBar } from "./Data/DonorSideBar";
+import { ImporterSidebar } from "./Data/ImporterSideBar";
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -12,8 +16,25 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
-  // Replace useLocalStorage with useState
+ 
   const [pageName, setPageName] = useState("dashboard");
+
+  const fullpathname = usePathname();
+  const path = fullpathname.split('/')[1];
+  
+  let navigationData;
+  if (path == 'user'){
+    navigationData = PatientSideBar
+  }
+  else if (path == "admin"){
+    navigationData = AdminSideBar
+  }
+  else if (path == "imp"){
+    navigationData = ImporterSidebar
+  }
+  else {
+    navigationData = DonorSideBar
+  }
 
   return (
     <ClickOutside onClick={() => setSidebarOpen(false)}>
@@ -70,7 +91,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         {/* Sidebar Content */}
         <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
           <nav className="mt-1 px-4 lg:px-6">
-            {menuGroups.map((group, groupIndex) => (
+            {navigationData.map((group, groupIndex) => (
               <div key={groupIndex}>
                 <h3 className="mb-5 text-sm font-medium text-gray-6 dark:text-dark-6">
                   {group.name}

@@ -18,7 +18,7 @@ export default function RootLayout({
 
   
   return (
-    <html lang="en">
+    <html lang="en" className="light:">
       <body
         className={` antialiased transition-colors duration-500 ease-in-out`}
       >
