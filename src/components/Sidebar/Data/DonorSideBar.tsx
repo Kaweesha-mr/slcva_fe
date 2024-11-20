@@ -1,4 +1,4 @@
-const menuGroups = [
+const DonorSideBar = [
     {
       name:"MENU",
       menuItems: [
@@ -24,7 +24,7 @@ const menuGroups = [
               />
             </svg>
           ),
-          label: "Dashboard",
+          label: "Donor",
           route: "#",
           children: [
             { label: "eCommerce", route: "/u" },
@@ -82,10 +82,5 @@ const menuGroups = [
     },
   ];
 
-  
 
-  
-  
-
-
-  export {menuGroups};
+  export {DonorSideBar}
