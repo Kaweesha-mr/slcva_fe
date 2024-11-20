@@ -1,7 +1,7 @@
-const Patient = () => {
+const Admin = () => {
     return ( 
-        <div>Patient Dashbord</div>
+        <div>Admin Dashbord</div>
      );
 }
  
-export default Patient;
+export default Admin;

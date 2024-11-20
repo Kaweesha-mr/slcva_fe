@@ -1,7 +1,7 @@
-const Patient = () => {
+const User = () => {
     return ( 
-        <div>Patient Dashbord</div>
+        <div>User Dashbord</div>
      );
 }
  
-export default Patient;
+export default User;

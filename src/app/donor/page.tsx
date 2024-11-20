@@ -1,7 +1,7 @@
-const Patient = () => {
+const Donor = () => {
     return ( 
-        <div>Patient Dashbord</div>
+        <div>Donor Dashbord</div>
      );
 }
  
-export default Patient;
+export default Donor;
