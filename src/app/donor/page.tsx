@@ -1,6 +1,6 @@
 const Donor = () => {
     return ( 
-        <div>Donor Dashbord</div>
+        <div>Feed</div>
      );
 }
  
