@@ -1,4 +1,4 @@
-const ImporterSidebar = [
+  const ImporterSidebar = [
     {
       name:"MENU",
       menuItems: [
@@ -24,7 +24,7 @@ const ImporterSidebar = [
               />
             </svg>
           ),
-          label: "Importer",
+          label: "Bill Requests",
           route: "#",
           children: [
             { label: "eCommerce", route: "/u" },
@@ -48,7 +48,7 @@ const ImporterSidebar = [
               />
             </svg>
           ),
-          label: "Tables",
+          label: "Quotations",
           route: "#",
           children: [
             { label: "Tables", route: "/tables" },
@@ -72,7 +72,7 @@ const ImporterSidebar = [
               />
             </svg>
           ),
-          label: "Pages",
+          label: "Profile",
           route: "#",
           children: [
             { label: "Settings", route: "/pages/settings" },
