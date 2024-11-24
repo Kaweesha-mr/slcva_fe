@@ -5,7 +5,7 @@ export type donationHistory = {
   name: string;
   date: string;
   amount: number;
-  photo: string;
+  photo?: string | null;
   isAnonymous: boolean;
 };
 

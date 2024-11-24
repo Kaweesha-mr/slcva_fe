@@ -11,17 +11,18 @@ const DashboardDonationProgress = ({
   donations,
 }: DashboardDonationProgressProps) => {
   // state used for toggling the number of donations to display
-  const [iscollapsed, setIscollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   if (!donations || donations.length === 0)
     return <div className="text-center">No donations available</div>;
-  // Determine how much donations to display(4 or all) based on iscollapsed state
-  const displayedDonations = iscollapsed ? donations : donations.slice(0, 4);
+
+  // Determine how much donations to display(4 or all) based on isCollapsed state
+  const displayedDonations = isCollapsed ? donations.slice(0, 4) : donations;
   return (
     <>
       {displayedDonations.map((donation) => {
         return (
-          <div className="grid gap-y-4 border-l-4" key={donation.id}>
+          <div className="my-2 lg:border-l-4" key={donation.id}>
             <div className="grid grid-flow-row lg:max-w-4xl lg:mx-10 gap-y-2">
               <Progress
                 label={donation.name ? donation.name : 'Donation Progress'}
@@ -50,16 +51,18 @@ const DashboardDonationProgress = ({
           </div>
         );
       })}
-      <Button
-        size="md"
-        variant="light"
-        radius="sm"
-        color="primary"
-        onClick={() => setIscollapsed((prev) => !prev)}
-        className="place-self-center lg:place-self-end lg:mr-10"
-      >
-        {iscollapsed ? 'Show Less' : 'Show All'}
-      </Button>
+      {donations.length > 4 && (
+        <Button
+          size="md"
+          variant="light"
+          radius="sm"
+          color="primary"
+          onClick={() => setIsCollapsed((prev) => !prev)}
+          className="place-self-center font-bold text-base lg:place-self-end lg:mr-10"
+        >
+          {isCollapsed ? 'Show more' : 'Show less'}
+        </Button>
+      )}
     </>
   );
 };
