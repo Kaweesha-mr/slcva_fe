@@ -1,10 +1,10 @@
 "use client";
 import React , {useState} from "react";
+import {z} from "zod";
  
- 
- 
-
 export default function Form (){
+
+    
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [license, setLicense] = useState("");
@@ -14,7 +14,18 @@ export default function Form (){
     const [confirmPassword, setConfirmPassword] = useState("");
     const [additionalInfo, setAdditionalInfo] = useState("");
     const[isSubmitting, setIsSubmitting] = useState(false);
-    const [error, setError] = useState<string[]>([]);
+    const [error, setError] = useState<string[]>([]); 
+
+    const FormSchema = z.object({
+        name: z.string().min(3, {message: "Name must be at least 3 characters long"}),
+        email: z.string().email({message: "Invalid email address"}),
+        license: z.string().min(5, {message: "License number must be at least 5 characters long"}),
+        phone: z.string().min(10, {message: "Invalid Phone number"}),
+        website: z.string().url({message: "Invalid website URL"}),
+        password: z.string().min(6, {message: "Password must be at least 6 characters long"}),
+        confirmPassword: z.string().min(6, {message: "Password must be at least 6 characters long"}),
+       
+    });
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -25,6 +36,9 @@ export default function Form (){
             setIsSubmitting(false);
             return;
         }
+
+    console.log("Submitted form data:");
+    console.log({ name, email, license, phone, website, password, confirmPassword, additionalInfo });
 
         // submit to the server
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -39,13 +53,14 @@ export default function Form (){
         setAdditionalInfo("");
         setIsSubmitting(false);
 
-        
-        }
+         }
+
+    
     
     
    return(
      
-       <form  onSubmit={handleSubmit} className="flex flex-col gap-y-2">
+       <form  onSubmit={handleSubmit} className="flex flex-100 flex-col gap-y-2">
         <h1 className="text-2xl font-semibold">Registration Request Form</h1>
         
         {
@@ -63,7 +78,6 @@ export default function Form (){
             // update the name state with the value of the input
             onChange={(e) => setName(e.target.value)} 
             placeholder="Name"
-            required
             type="text"
             className="border-2 border-gray-300 rounded-md p-2"
             />
@@ -71,17 +85,16 @@ export default function Form (){
         <input
             value={license}
             onChange={(e) => setLicense(e.target.value)}
-            required
             placeholder="License Number"
             type="text"
             className="border-2 border-gray-300 rounded-md p-2"
             />
+
         <input  
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="border-2 border-gray-300 rounded-md p-2"
             placeholder="Email"
-            required
             type="email"
             />  
  
@@ -90,7 +103,6 @@ export default function Form (){
             onChange={(e) => setPhone(e.target.value)}
             className="border-2 border-gray-300 rounded-md p-2"
             placeholder="Phone Number"
-            required
             type="text"
 
             />
@@ -98,17 +110,16 @@ export default function Form (){
             <input
             value={website}
             onChange={(e) => setWebsite(e.target.value)}
-           className="border-2 border-gray-300 rounded-md p-2"
+            className="border-2 border-gray-300 rounded-md p-2"
             placeholder="Website"  
             type="text"
             />
 
-            {/* textarea for additional information */}
-            <input
+           
+            <textarea
             value={additionalInfo}
             onChange={(e) => setAdditionalInfo(e.target.value)}
-           className="border-2 border-gray-300 rounded-md p-2"
-            type="textarea"
+            className="border-2 border-gray-300 rounded-md p-2"
             placeholder="Additional Information"
             />
 
@@ -116,8 +127,6 @@ export default function Form (){
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="border-2 border-gray-300 rounded-md p-2"
-            required
-            minLength={10}
             type="password"
             placeholder="Password"
             />
@@ -127,8 +136,6 @@ export default function Form (){
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="border-2 border-gray-300 rounded-md p-2"
-            required
-            minLength={10}
             type="password"
             placeholder="Confirm Password"
             />

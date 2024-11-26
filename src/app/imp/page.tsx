@@ -36,8 +36,6 @@ export default function Home() {
           {cardData.map((card, index) => (<DashboardCard key={index} {...card} />))}
         </div>
            
-        
-
         {/* <AnalyticsChart />
         <PostsTable title='Latest Posts' limit={5} /> */}
 
