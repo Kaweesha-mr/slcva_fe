@@ -11,9 +11,10 @@ export default function Form (){
     const [phone, setPhone] = useState("");
     const [website, setWebsite] = useState("");
     const [password, setPassword] = useState("");   
+    const [selectfile, setSelectFile] = useState<File | null>(null);
     const [confirmPassword, setConfirmPassword] = useState("");
     const [additionalInfo, setAdditionalInfo] = useState("");
-    const[isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState<string[]>([]); 
 
     const FormSchema = z.object({
@@ -27,9 +28,12 @@ export default function Form (){
        
     });
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         setIsSubmitting(true);
+
+        console.log("Submitted form data:");
+        console.log({ name, email, license, phone, website, password, confirmPassword, additionalInfo,selectfile });
 
         if(password !== confirmPassword){
             setError(["Passwords do not match"]);
@@ -37,8 +41,6 @@ export default function Form (){
             return;
         }
 
-    console.log("Submitted form data:");
-    console.log({ name, email, license, phone, website, password, confirmPassword, additionalInfo });
 
         // submit to the server
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -51,6 +53,7 @@ export default function Form (){
         setPassword("");
         setConfirmPassword("");
         setAdditionalInfo("");
+        setSelectFile(null);
         setIsSubmitting(false);
 
          }
@@ -59,6 +62,7 @@ export default function Form (){
     
     
    return(
+ 
      
        <form  onSubmit={handleSubmit} className="flex flex-100 flex-col gap-y-2">
         <h1 className="text-2xl font-semibold">Registration Request Form</h1>
@@ -73,13 +77,14 @@ export default function Form (){
             )
 
         }
+
         <input
             value={name}
             // update the name state with the value of the input
             onChange={(e) => setName(e.target.value)} 
             placeholder="Name"
             type="text"
-            className="border-2 border-gray-300 rounded-md p-2"
+            className="border-2 border-gray-300 flex justify-center rounded-md p-2"
             />
 
         <input
@@ -87,7 +92,7 @@ export default function Form (){
             onChange={(e) => setLicense(e.target.value)}
             placeholder="License Number"
             type="text"
-            className="border-2 border-gray-300 rounded-md p-2"
+            className="border-2 border-gray-300 w-90 rounded-md p-2"
             />
 
         <input  
@@ -108,11 +113,12 @@ export default function Form (){
             />
 
             <input
+            type="url"
             value={website}
             onChange={(e) => setWebsite(e.target.value)}
             className="border-2 border-gray-300 rounded-md p-2"
             placeholder="Website"  
-            type="text"
+             
             />
 
            
@@ -122,6 +128,17 @@ export default function Form (){
             className="border-2 border-gray-300 rounded-md p-2"
             placeholder="Additional Information"
             />
+
+            <input 
+            type = "file"
+            onChange={(e) => {
+                if (e.target.files && e.target.files.length > 0) {
+                    setSelectFile(e.target.files[0]);
+                }
+            }}
+            className="border-2 border-gray-300 rounded-md p-2"
+            placeholder="Upload Documents"
+             />
 
         <input
             value={password}
@@ -144,9 +161,10 @@ export default function Form (){
            <button
             type="submit"
             disabled = {isSubmitting}
-            className="bg-blue-500 disabled:bg-gray-500 py-2 rounded"> Submit </button>
+            className="bg-blue-500 disabled:bg-gray-500 py-2 rounded"> Send Request </button>
 
        </form>
+     
  
   );
 }
