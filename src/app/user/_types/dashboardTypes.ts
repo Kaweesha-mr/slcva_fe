@@ -1,4 +1,6 @@
-// Represents the donation history of a user.
+// Represents the donation history of a user. (for recent donations component in dahboard)
+
+import { OrderStatus } from '@/app/constants/orderStatus';
 
 export type donationHistory = {
   id: string;
@@ -9,8 +11,7 @@ export type donationHistory = {
   isAnonymous: boolean;
 };
 
-
-// Represents the progress of a donation.
+// Represents the progress of a donation. (for donation progress component in dahboard)
 
 export type donationProgress = {
   id: string;
@@ -18,3 +19,13 @@ export type donationProgress = {
   percentage: number;
   daysLeft: number;
 };
+
+export interface Order {
+  id: string;
+  medication_name: string;
+  medication_dosage: string;
+  quantity: number;
+  importer: string;
+  price: Number;
+  order_status: OrderStatus;
+}

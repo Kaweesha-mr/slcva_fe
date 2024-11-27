@@ -75,7 +75,7 @@ export const RecentDonationCard = ({
           </div>
         );
       })}
-       {/* toggle button to display more items */}
+      {/* toggle button to display more items */}
       {recentDonations.length > 4 && (
         <Button
           size="md"
