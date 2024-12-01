@@ -15,7 +15,7 @@ const AdminSideBar = [
           </svg>
         ),
         label: 'Account Management',
-        route: '/manage',
+        route: 'admin/manage',
       },
       {
         icon: (
