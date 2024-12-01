@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/button": "^2.0.38",
     "@nextui-org/dropdown": "^2.1.31",
     "@nextui-org/react": "^2.4.8",
     "@nextui-org/system": "^2.2.6",
@@ -24,6 +25,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.13",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
