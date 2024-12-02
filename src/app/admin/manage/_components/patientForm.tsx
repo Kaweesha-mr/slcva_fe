@@ -21,83 +21,138 @@ const PatientForm = () => {
       },
     );
 
-    const patientScheema = z
-    .object({
-      fullName: z.string().min(5).max(255),
-      nic: z.string({ message: 'NIC must be 10 digits' }),
-      dob: z.string(),
-      email: z.string().email(),
-      phone: z
-        .string({ message: 'phone number must have 10 digits' })
-        .regex(/^[0-9]{10}$/, { message: 'Phone number must be 10 digits' }),
-      password: z
-        .string()
-        .min(8, { message: 'Password must be at least 8 characters long' })
-        .regex(/[a-zA-Z]/, { message: 'Password must contain letters' })
-        .regex(/[0-9]/, { message: 'Password must contain numbers' }),
-      confirmPassword: z.string(),
+  type Patient = {
+    fullName: string;
+    nic: string;
+    dob: string;
+    email: string;
+    phone: string;
+    password: string;
+    confirmPassword: string;
+    rearSideNIC: File | null;
+    frontSideNIC: File | null;
+    medicalDocuments: File | null;
+  };
+
+  type Importer = {
+    fullName: string;
+    nic: string;
+    dob: string;
+    email: string;
+    phone: string;
+    password: string;
+    confirmPassword: string;
+    website: string;
+    licenceNumber: string;
+    importerDocs: File | null;
+  };
+
+  type Donor = {
+    fullName: string;
+    nic: string;
+    dob: string;
+    email: string;
+    phone: string;
+    password: string;
+    confirmPassword: string;
+    address: string;
+  };
+
+  type UserType = Patient | Importer | Donor;
+
+  const defaultFormData = {
+    patient: {
+      fullName: '',
+      nic: '',
+      dob: '',
+      email: '',
+      phone: '',
+      password: '',
+      confirmPassword: '',
+      rearSideNIC: null,
+      frontSideNIC: null,
+      medicalDocuments: null,
+    } as Patient,
+    importer: {
+      fullName: '',
+      nic: '',
+      dob: '',
+      email: '',
+      phone: '',
+      password: '',
+      confirmPassword: '',
+      website: '',
+      licenceNumber: '',
+      importerDocs: null,
+    } as Importer,
+    donor: {
+      fullName: '',
+      nic: '',
+      dob: '',
+      email: '',
+      phone: '',
+      password: '',
+      confirmPassword: '',
+      address: '',
+    } as Donor,
+  };
+
+  const baseSchema = z.object({
+    fullName: z.string().min(5).max(255),
+    nic: z.string({ message: 'NIC must be 10 digits' }),
+    dob: z.string(),
+    email: z.string().email(),
+    phone: z
+      .string({ message: 'Phone number must have 10 digits' })
+      .regex(/^[0-9]{10}$/, { message: 'Phone number must be 10 digits' }),
+    password: z
+      .string()
+      .min(8, { message: 'Password must be at least 8 characters long' }),
+    confirmPassword: z.string(),
+  });
+
+  const patientSchema = baseSchema
+    .extend({
       rearSideNIC: fileSchema,
       frontSideNIC: fileSchema,
       medicalDocuments: fileSchema,
-      website: z
-        .string()
-        .min(5, { message: 'Website must be at least 5 characters long' })
-        .url({ message: 'Website must be a valid URL' })
-        .optional(), // Only required for 'importer'
-      licenceNumber: z
-        .string()
-        .min(5, { message: 'Licence number must be at least 5 characters long' })
-        .optional(), // Only required for 'importer'
-      address: z
-        .string()
-        .min(10, { message: 'Address must be at least 10 characters long' })
-        .optional(), // Only required for 'donor'
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
       path: ['confirmPassword'],
     });
-  
 
-  type Patient = z.infer<typeof patientScheema>;
+  const importerSchema = baseSchema
+    .extend({
+      website: z.string().url({ message: 'Website must be a valid URL' }),
+      importerDocs: fileSchema,
+      licenceNumber: z
+        .string()
+        .min(5, { message: 'Licence number must be at least 5 characters' }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords don't match",
+      path: ['confirmPassword'],
+    });
 
-  const [formData, setFormData] = useState<Patient>({
-    fullName: '',
-    nic: '',
-    dob: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-    rearSideNIC: null,
-    frontSideNIC: null,
-    medicalDocuments: null,
-  });
+  const donorSchema = baseSchema
+    .extend({
+      address: z
+        .string()
+        .min(10, { message: 'Address must be at least 10 characters' }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords don't match",
+      path: ['confirmPassword'],
+    });
+
   const [errors, setErrors] = useState({});
   const [selected, setSelected] = useState('patient');
+  const [formData, setFormData] = useState<UserType>(defaultFormData[selected]);
 
   useEffect(() => {
-    if (selected === 'patient') {
-      setFormData((prevState) => ({
-        ...prevState,
-        website: '',
-        licenceNumber: '',
-        address: '',
-      }));
-    } else if (selected === 'importer') {
-      setFormData((prevState) => ({
-        ...prevState,
-        address: '',
-      }));
-    } else if (selected === 'donor') {
-      setFormData((prevState) => ({
-        ...prevState,
-        website: '',
-        licenceNumber: '',
-      }));
-    }
+    setFormData(defaultFormData[selected]);
   }, [selected]);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -112,60 +167,65 @@ const PatientForm = () => {
 
     setFormData((prevState) => ({
       ...prevState,
-      [name]: files[0], // Store the file in state
+      [name]: files[0] || null, // Default to null if no file selected
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (handleValidation(formData)) {
-      console.log('Form Submitted', formData);
+  
+    const isValid = handleValidation(formData);
+  
+    if (isValid) {
+      switch (selected) {
+        case 'patient':
+          console.log('Submitting Patient data to API:', formData);
+          // Simulate API call for patient
+          break;
+  
+        case 'importer':
+          console.log('Submitting Importer data to API:', formData);
+          // Simulate API call for importer
+          break;
+  
+        case 'donor':
+          console.log('Submitting Donor data to API:', formData);
+          // Simulate API call for donor
+          break;
+  
+        default:
+          console.error('Unknown user type selected');
+      }
     } else {
       console.log('Form has errors', errors);
     }
   };
+  
 
-  const handleValidation = (patient: Patient) => {
-    const result = patientScheema.safeParse(patient);
+  const handleValidation = () => {
+    const schemaMap = {
+      patient: patientSchema,
+      importer: importerSchema,
+      donor: donorSchema,
+    };
+
+    const selectedSchema = schemaMap[selected];
+    const result = selectedSchema.safeParse(formData);
+
     if (!result.success) {
       const fieldErrors = result.error.formErrors.fieldErrors;
-      setErrors({
-        fullName: fieldErrors.fullName?.[0],
-        nic: fieldErrors.nic?.[0],
-        dob: fieldErrors.dob?.[0],
-        email: fieldErrors.email?.[0],
-        phone: fieldErrors.phone?.[0],
-        password: fieldErrors.password?.[0],
-        confirmPassword: fieldErrors.confirmPassword?.[0],
-        rearSideNIC: fieldErrors.rearSideNIC?.[0],
-        frontSideNIC: fieldErrors.frontSideNIC?.[0],
-        medicalDocuments: fieldErrors.medicalDocuments?.[0],
-        website: fieldErrors.website?.[0],
-        licenceNumber: fieldErrors.licenceNumber?.[0],
-        address: fieldErrors.address?.[0],
-      });
+      setErrors(fieldErrors); // Directly use fieldErrors for better flexibility
+      return false;
     } else {
       setErrors({});
       return true;
     }
   };
-  
 
   const handleClear = () => {
-    setFormData({
-      fullName: '',
-      nic: '',
-      dob: '',
-      email: '',
-      phone: '',
-      password: '',
-      confirmPassword: '',
-      rearSideNIC: null,
-      frontSideNIC: null,
-      medicalDocuments: null,
-    });
+    setFormData(defaultFormData[selected]);
   };
+
   return (
     <div>
       <RadioGroup
@@ -250,7 +310,7 @@ const PatientForm = () => {
                   type="file"
                   isInvalid={!!errors.frontSideNIC}
                   errorMessage={errors.frontSideNIC}
-                  name = 'frontSideNIC'
+                  name="frontSideNIC"
                   onChange={handleFileChange}
                 />
               </Tooltip>
@@ -361,7 +421,7 @@ const PatientForm = () => {
             >
               <Input
                 id="importerDocs"
-                name = 'importerDocs'
+                name="importerDocs"
                 type="file"
                 onChange={handleFileChange}
                 name="medicalDocuments"
