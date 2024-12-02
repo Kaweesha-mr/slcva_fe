@@ -13,14 +13,17 @@ import {
 const PatientForm = () => {
   type UserType = Patient | Importer | Donor;
 
-  const [errors, setErrors] = useState<{ [key: string]: string | undefined }>({});
+  const [errors, setErrors] = useState<{ [key: string]: string | undefined }>(
+    {},
+  );
   const [selected, setSelected] = useState('patient');
-  const [formData, setFormData] = useState<UserType>(defaultFormData['patient']);
+  const [formData, setFormData] = useState<UserType>(
+    defaultFormData['patient'],
+  );
 
   useEffect(() => {
     setFormData(defaultFormData[selected as keyof typeof defaultFormData]);
   }, [selected]);
-  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,9 +44,9 @@ const PatientForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     const isValid = handleValidation();
-  
+
     if (isValid) {
       switch (selected) {
         case 'patient':
@@ -62,7 +65,6 @@ const PatientForm = () => {
       console.log('Form has errors', errors);
     }
   };
-  
 
   const handleValidation = () => {
     const schemaMap: Record<string, any> = {
@@ -70,10 +72,10 @@ const PatientForm = () => {
       importer: importerSchema,
       donor: donorSchema,
     };
-  
+
     const selectedSchema = schemaMap[selected];
     const result = selectedSchema.safeParse(formData);
-  
+
     if (!result.success) {
       setErrors(result.error.formErrors.fieldErrors);
       return false;
@@ -82,17 +84,16 @@ const PatientForm = () => {
       return true;
     }
   };
-  
 
   const handleClear = () => {
     setFormData(defaultFormData[selected as keyof typeof defaultFormData]);
-    
-    const fileInputs = document.querySelectorAll<HTMLInputElement>('input[type="file"]');
+
+    const fileInputs =
+      document.querySelectorAll<HTMLInputElement>('input[type="file"]');
     fileInputs.forEach((input) => {
       input.value = '';
     });
   };
-  
 
   return (
     <div>
